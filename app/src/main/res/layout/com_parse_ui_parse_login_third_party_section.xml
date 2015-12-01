@@ -1,0 +1,16 @@
+<merge xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <Button
+        android:id="@+id/facebook_login"
+        android:layout_height="wrap_content"
+        android:layout_width="wrap_content"
+        android:text="@string/com_parse_ui_facebook_login_button_label"
+        android:visibility="gone" />
+
+    <Button
+        android:id="@+id/twitter_login"
+        android:layout_height="wrap_content"
+        android:layout_width="wrap_content"
+        android:text="@string/com_parse_ui_twitter_login_button_label"
+        android:visibility="gone" />
+</merge>
