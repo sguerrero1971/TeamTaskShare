@@ -10,12 +10,12 @@ import java.util.UUID;
 @ParseClassName("TaskShare")
 public class TaskShare extends ParseObject {
 	
-	public String getTitle() {
-		return getString("title");
+	public String getTask(){
+		return getString("task");
 	}
 	
-	public void setTitle(String title) {
-		put("title", title);
+	public void setTask(String title) {
+		put("task", title);
 	}
 	
 	public ParseUser getAuthor() {
@@ -26,14 +26,14 @@ public class TaskShare extends ParseObject {
 		put("author", currentUser);
 	}
 	
-	public boolean isDraft() {
-		return getBoolean("isDraft");
+	public boolean status() {
+		return getBoolean("status");
 	}
 	
-	public void setDraft(boolean isDraft) {
-		put("isDraft", isDraft);
+	public void status(boolean status) {
+		put("status", status);
 	}
-	
+
 	public void setUuidString() {
 	    UUID uuid = UUID.randomUUID();
 	    put("uuid", uuid.toString());

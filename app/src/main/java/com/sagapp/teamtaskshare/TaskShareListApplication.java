@@ -20,7 +20,9 @@ public class TaskShareListApplication extends Application {
 		
 		// enable the Local Datastore
 		Parse.enableLocalDatastore(getApplicationContext());
-		Parse.initialize(this, "YOUR_APP_ID", "YOUR_CLIENT_KEY");
+		String app_id = getString(R.string.parse_app_id);
+		String client_key = getString(R.string.parse_client_key);
+		Parse.initialize(this,app_id, client_key);
 		ParseUser.enableAutomaticUser();
 		ParseACL defaultACL = new ParseACL();
 		ParseACL.setDefaultACL(defaultACL, true);	
