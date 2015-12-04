@@ -15,6 +15,7 @@
         android:fontFamily="sans-serif-light"
         android:gravity="center"
         android:text="@string/not_logged_in"
+
         android:textAlignment="center"
         android:textSize="18sp" />
 
