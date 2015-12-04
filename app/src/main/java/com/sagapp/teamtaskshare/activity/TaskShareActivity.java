@@ -132,7 +132,9 @@ public class TaskShareActivity extends Activity {
             // Log out the current user
             ParseUser.logOut();
             // Update the logged in label info
-            updateLoggedInInfo();
+            ParseUser currentUser = ParseUser.getCurrentUser();
+                loggedInInfoView.setText(getString(R.string.logged_in,
+                        currentUser.getString("name")));
             // Clear the view
             taskShareListAdapter.clear();
             // Unpin all the current objects
@@ -151,11 +153,9 @@ public class TaskShareActivity extends Activity {
     @Override
     public boolean onPrepareOptionsMenu(Menu menu) {
         super.onPrepareOptionsMenu(menu);
-        if(ParseUser.getCurrentUser() != null) {
-            boolean realUser = false;
+        boolean realUser = (ParseUser.getCurrentUser() != null);
             menu.findItem(R.id.action_logout).setVisible(!realUser);
             menu.findItem(R.id.action_login).setVisible(realUser);
-        }
         return true;
     }
 

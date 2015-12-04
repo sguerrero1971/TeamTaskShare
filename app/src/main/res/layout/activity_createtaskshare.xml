@@ -20,13 +20,13 @@
     </EditText>
 
     <Button
-        android:id="@+id/saveButton"
+        android:id="@+id/selectButton"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
         android:text="@string/save" />
 
     <Button
-        android:id="@+id/deleteButton"
+        android:id="@+id/resumeButton"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
         android:text="@string/delete"

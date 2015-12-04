@@ -7,7 +7,7 @@ import com.parse.ParseUser;
 
 import java.util.UUID;
 
-@ParseClassName("TaskList")
+@ParseClassName("TaskShare")
 public class TaskShare extends ParseObject {
 	
 	public String getTask(){
