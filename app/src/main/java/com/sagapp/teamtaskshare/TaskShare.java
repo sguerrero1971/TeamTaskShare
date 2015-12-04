@@ -7,7 +7,7 @@ import com.parse.ParseUser;
 
 import java.util.UUID;
 
-@ParseClassName("TaskShare")
+@ParseClassName("TaskList")
 public class TaskShare extends ParseObject {
 	
 	public String getTask(){
@@ -30,7 +30,7 @@ public class TaskShare extends ParseObject {
 		return getBoolean("status");
 	}
 	
-	public void status(boolean status) {
+	public void setStatus(boolean status) {
 		put("status", status);
 	}
 

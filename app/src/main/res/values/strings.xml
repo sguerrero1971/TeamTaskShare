@@ -11,7 +11,7 @@
     <string name="delete">Delete</string>
 
     //activity_taskShare_list
-    <string name="no_items">No items, click + to start adding tasks.</string>
+    <string name="no_items">No items, You must log in to see Task List</string>
     <string name="not_logged_in">You are not logged in</string>
     <string name="logged_in">Logged in</string>
 
