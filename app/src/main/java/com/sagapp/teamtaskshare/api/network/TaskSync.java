@@ -8,13 +8,11 @@ import android.widget.Toast;
 
 import com.parse.FindCallback;
 import com.parse.ParseException;
-import com.parse.ParseObject;
 import com.parse.ParseQuery;
 import com.parse.ParseUser;
 import com.parse.SaveCallback;
 import com.sagapp.teamtaskshare.TaskShare;
 import com.sagapp.teamtaskshare.TaskShareListApplication;
-import com.sagapp.teamtaskshare.ui.activity.TaskShareActivity;
 
 import java.util.List;
 
@@ -23,7 +21,8 @@ import java.util.List;
  */
 public class TaskSync {
 
-    public void syncTaskListToParse() {
+    public static void syncTaskListToParse(Context context) {
+
         // We could use saveEventually here, but we want to have some UI
         // around whether or not the draft has been saved to Parse
         ConnectivityManager cm =
@@ -57,11 +56,11 @@ public class TaskSync {
                                     public void done(ParseException e) {
                                         if (e == null) {
                                             // Let adapter know to update view
-                                            if (!isFinishing()) {
-                                                TaskShareActivity.taskShareListAdapter
-                                                        .notifyDataSetChanged();
-                                            }
-                                        } else {
+                                            //if (!isFinishing()) {
+                                            //  taskShareListAdapter
+                                            //        .notifyDataSetChanged();
+
+                                        }else {
                                             // Reset the is draft flag locally
                                             // to true
                                             taskShare.setStatus(true);
@@ -82,14 +81,14 @@ public class TaskSync {
             // If there is no connection, let the user know the sync didn't
             // happen
             Toast.makeText(
-                    getApplicationContext(),
+                    context,
                     "Your device appears to be offline. Some todos may not have been synced to Parse.",
                     Toast.LENGTH_LONG).show();
         }
 
     }
 
-    private void loadFromParse() {
+   /* private void loadFromParse() {
         ParseQuery<TaskShare> query = TaskShare.getQuery();
         query.whereEqualTo("author", ParseUser.getCurrentUser());
         query.findInBackground(new FindCallback<TaskShare>() {
@@ -116,5 +115,5 @@ public class TaskSync {
                 }
             }
         });
-    }
+    */}
 }
