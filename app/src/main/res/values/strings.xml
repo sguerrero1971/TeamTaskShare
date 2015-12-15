@@ -23,7 +23,7 @@
     //activity_profile
     <string name="profile_title_logged_in">You are logged in as</string>
     <string name="profile_logout_button_label">Log out</string>
-    <string name="profile_title_logged_out">You must be logged in to view your profile</string>
+    <string name="profile_title_logged_out">You must be logged in to view this App</string>
     <string name="profile_login_button_label">Log in</string>
 
     //AndroidManifest
@@ -36,4 +36,9 @@
     <string name="checklist_instruction">Inspect each listed component and verify it is in working order, place a check in the corresponding box of working component.</string>
     <string name="loginOrLogoutButton">Log in</string>
     <string name="get_list_button">Get List of Task</string>
+    <string name="App_Info">Mobile Equipment Operator Pre-Op Inspection</string>
+    <string name="submit">Submit List</string>
+    <string name="App_warning">Any unchecked items will be considered faulty and require you to provide further information before being submitted.</string>
+    <string name="deleted">Deleted</string>
+    <string name="undo">Undo</string>
 </resources>

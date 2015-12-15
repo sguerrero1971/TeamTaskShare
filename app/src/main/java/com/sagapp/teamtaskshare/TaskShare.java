@@ -39,9 +39,11 @@ public class TaskShare extends ParseObject {
 	    put("uuid", uuid.toString());
 	}
 	
-	public String getUuidString() {
-		return getString("uuid");
-	}
+	public String getUuidString() {return getString("uuid");}
+
+	public boolean uploaded() {return getBoolean("uploaded");}
+
+	public void setUploaded(boolean uploaded) { put("uploaded", uploaded);}
 	
 	public static ParseQuery<TaskShare> getQuery() {
 		return ParseQuery.getQuery(TaskShare.class);

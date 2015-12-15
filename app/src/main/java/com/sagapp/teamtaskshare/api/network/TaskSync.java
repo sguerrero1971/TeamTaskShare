@@ -42,14 +42,14 @@ public class TaskSync {
 
                 ParseQuery<TaskShare> query = TaskShare.getQuery();
                 query.fromPin(TaskShareListApplication.TASKSHARE_GROUP_NAME);
-                query.whereEqualTo("status", true);
+                query.whereEqualTo("uploaded", false);
                 query.findInBackground(new FindCallback<TaskShare>() {
                     public void done(List<TaskShare> taskShares, ParseException e) {
                         if (e == null) {
                             for (final TaskShare taskShare : taskShares) {
                                 // Set is draft flag to false before
                                 // syncing to Parse
-                                taskShare.setStatus(false);
+                                taskShare.setStatus(true);
                                 taskShare.saveInBackground(new SaveCallback() {
 
                                     @Override
@@ -63,7 +63,7 @@ public class TaskSync {
                                         }else {
                                             // Reset the is draft flag locally
                                             // to true
-                                            taskShare.setStatus(true);
+                                            taskShare.setStatus(false);
                                         }
                                     }
 

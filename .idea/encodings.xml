@@ -5,9 +5,9 @@
     <file url="file://$PROJECT_DIR$/app/src/main/java/com/sagapp/teamtaskshare/TaskShareListApplication.java" charset="windows-1252" />
     <file url="file://$PROJECT_DIR$/app/src/main/res/drawable/ic_action_new.png" charset="windows-1252" />
     <file url="file://$PROJECT_DIR$/app/src/main/res/drawable/ic_action_refresh.png" charset="windows-1252" />
-    <file url="file://$PROJECT_DIR$/app/src/main/res/layout/activity_createtaskshare.xml" charset="windows-1252" />
+    <file url="file://$PROJECT_DIR$/app/src/main/res/layout/activity_checklist.xml" charset="windows-1252" />
+    <file url="file://$PROJECT_DIR$/app/src/main/res/layout/activity_edit_taskshare.xml" charset="windows-1252" />
     <file url="file://$PROJECT_DIR$/app/src/main/res/layout/activity_taskshare.xml" charset="windows-1252" />
-    <file url="file://$PROJECT_DIR$/app/src/main/res/layout/list_item_taskshare.xml" charset="windows-1252" />
     <file url="file://$PROJECT_DIR$/app/src/main/res/menu/taskshare_list.xml" charset="windows-1252" />
     <file url="PROJECT" charset="UTF-8" />
   </component>

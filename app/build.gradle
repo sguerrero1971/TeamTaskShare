@@ -27,4 +27,5 @@ dependencies {
     compile 'com.parse:parseui-login-android:0.0.1'
     compile 'com.parse:parse-android:1.11.0'
     compile 'com.parse:parseui-widget-android:0.0.1'
+    compile 'com.hudomju:swipe-to-dismiss-undo:1.0'
 }
