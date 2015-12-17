@@ -5,6 +5,8 @@
       <root url="file://$PROJECT_DIR$/app/build/intermediates/exploded-aar/com.hudomju/swipe-to-dismiss-undo/1.0/res" />
     </CLASSES>
     <JAVADOC />
-    <SOURCES />
+    <SOURCES>
+      <root url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/com.hudomju/swipe-to-dismiss-undo/1.0/44de08343e358fa04f0ff7a9cfa9ed92f42bc627/swipe-to-dismiss-undo-1.0-sources.jar!/" />
+    </SOURCES>
   </library>
 </component>

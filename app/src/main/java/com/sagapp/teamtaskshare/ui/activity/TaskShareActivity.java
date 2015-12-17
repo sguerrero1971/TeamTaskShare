@@ -22,7 +22,7 @@ public class TaskShareActivity extends Activity {
     private TextView emailTextView;
     private TextView nameTextView;
     private Button loginOrLogoutButton;
-    public ParseUser currentUser;
+    public ParseUser currentUser = ParseUser.getCurrentUser();
 
 
     @Override
@@ -52,37 +52,40 @@ public class TaskShareActivity extends Activity {
                     startActivityForResult(builder.build(), LOGIN_ACTIVITY_CODE);
 
                 }
-                openCheckListActivity();
             }
         });
     }
 
 
 
-    private void openCheckListActivity(){
+ /*   private void openCheckListActivity(){
         Intent myIntent = new Intent(this, CheckListActivity.class);
         startActivityForResult(myIntent, LOGIN_ACTIVITY_CODE);
     }
+*/
 
-
- /*   @Override
+  @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
         // An OK result means the pinned dataset changed or
         // log in was successful
         if (resultCode == RESULT_OK) {
-            if (requestCode == EDIT_ACTIVITY_CODE) {
+            Intent myIntent = new Intent(this, CheckListActivity.class);
+            startActivity(myIntent);
+
+           // if (requestCode == EDIT_ACTIVITY_CODE) {
                 // Coming back from the edit view, update the view
-                taskShareListAdapter.loadObjects();
-            } else if (requestCode == LOGIN_ACTIVITY_CODE) {
+             //   taskShareListAdapter.loadObjects();
+           // } else if(requestCode == LOGIN_ACTIVITY_CODE) {
                 // If the user is new, require login or create account,
                 // else get the current list from Parse
 
-            }
+          //  }
 
         }
     }
 
+ /*
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.taskshare_list, menu);
@@ -125,7 +128,7 @@ public class TaskShareActivity extends Activity {
             nameTextView.setText(fullName);
         }
         loginOrLogoutButton.setText(R.string.profile_logout_button_label);
-        openCheckListActivity();
+       // openCheckListActivity();
     }
 
     /**
