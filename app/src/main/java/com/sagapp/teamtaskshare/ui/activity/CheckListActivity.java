@@ -2,6 +2,7 @@ package com.sagapp.teamtaskshare.ui.activity;
 
 import android.app.Activity;
 import android.content.Intent;
+import android.content.res.Resources;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -157,13 +158,21 @@ public class CheckListActivity extends Activity {
                 });
     }
 */
-    static class TaskBaseAdapter extends BaseAdapter {
+     private class TaskBaseAdapter extends BaseAdapter {
 
+
+
+
+
+    public static void TaskBaseAdapter() {
+        List<String> mTaskSet = ArraysList<things>();
+    }
+    
+    private void things(){
         mItems = getResources().getStringArray(R.array.tasklist);
+    }
 
-        private final List<String[]> mTaskSet = ArraysList<mItems[]>();
-
-        @Override
+    @Override
         public int getCount() {
             return mTaskSet.size();
         }
