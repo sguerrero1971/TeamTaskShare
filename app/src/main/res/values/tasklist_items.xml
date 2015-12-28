@@ -4,6 +4,24 @@
         <item>Backup Alarm</item>
         <item>Horn</item>
         <item>Glass Wipers</item>
+        <item>Seatbelt</item>
+        <item>Lights</item>
+        <item>Mirrors</item>
+        <item>Door Latches</item>
+        <item>HouseKeeping</item>
+        <item>Brakes</item>
+        <item>Parking Brake</item>
+        <item>Steering</item>
+        <item>Wheels and Tires</item>
+        <item>Steps and Handels</item>
+        <item>Fire Extinguisher</item>
+        <item>Guards</item>
+        <item>Oil Levels</item>
+        <item>Water Levels</item>
+        <item>Radiator</item>
+        <item>Differential</item>
+        <item>Transmission</item>
+        <item>SCSR</item>
     </string-array>
 
     <string-array name="shift">

@@ -1,22 +1,10 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android" >
-    <!--
    <item
-        android:id="@+id/action_sync"
+        android:id="@+id/action_settings"
         android:icon="@drawable/ic_action_refresh"
         android:showAsAction="ifRoom"
-        android:title="@string/action_sync">
+        android:title="@string/current_profile">
     </item>
-    
-   <item
-        android:id="@+id/action_logout"
-        android:showAsAction="never"
-        android:title="@string/action_logout">
-    </item>
-    
-   <item
-        android:id="@+id/action_login"
-        android:showAsAction="never"
-        android:title="@string/action_login">
-    </item>
--->
+
+
 </menu>

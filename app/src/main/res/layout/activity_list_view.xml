@@ -32,7 +32,7 @@
             android:layout_height="match_parent"
             android:id="@+id/txt_delete"
             android:gravity="center_vertical"
-            android:text="@string/deleted"
+            android:text="@string/submit"
             android:clickable="false"
             android:layout_weight="2"
             android:hapticFeedbackEnabled="true"

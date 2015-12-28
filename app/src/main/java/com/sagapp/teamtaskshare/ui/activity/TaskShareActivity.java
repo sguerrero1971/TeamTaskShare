@@ -36,21 +36,25 @@ public class TaskShareActivity extends Activity {
         nameTextView = (TextView) findViewById(R.id.profile_name);
         titleTextView.setText(R.string.profile_title_logged_out);
 
+        if(currentUser != null){
+            Intent myIntent = new Intent(this, CheckListActivity.class);
+            startActivity(myIntent);
+        }
+
         //Button to allow user to log in
         loginOrLogoutButton = (Button) findViewById(R.id.login_or_logout_button);
         loginOrLogoutButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (currentUser != null) {
+                if (currentUser == null) {
+                    // User clicked to log in.
+                    ParseLoginBuilder builder = new ParseLoginBuilder(TaskShareActivity.this);
+                    startActivityForResult(builder.build(), LOGIN_ACTIVITY_CODE);
+                } else {
                     // User clicked to log out.
                     ParseUser.logOut();
                     currentUser = null;
                     showProfileLoggedOut();
-                } else {
-                    // User clicked to log in.
-                    ParseLoginBuilder builder = new ParseLoginBuilder(TaskShareActivity.this);
-                    startActivityForResult(builder.build(), LOGIN_ACTIVITY_CODE);
-
                 }
             }
         });
@@ -128,7 +132,6 @@ public class TaskShareActivity extends Activity {
             nameTextView.setText(fullName);
         }
         loginOrLogoutButton.setText(R.string.profile_logout_button_label);
-       // openCheckListActivity();
     }
 
     /**

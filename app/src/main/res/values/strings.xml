@@ -5,21 +5,6 @@
     <string name="parse_app_id">7WUuLWECqZy90VxNm8xN3wgaakX7fl6gDtMEX4dK</string>
     <string name="parse_client_key">3MMUPtpXVIiJqiTtPlx97hnrYFenIvOx7ryvzhHp</string>
 
-    //activity_new_taskShare
-    <string name="taskShare_prompt">Enter task details:</string>
-    <string name="save">Save</string>
-    <string name="delete">Delete</string>
-
-    //activity_taskShare
-    <string name="no_items">No items, You must log in to see Task List</string>
-    <string name="not_logged_in">You are not logged in</string>
-    <string name="logged_in">Logged in</string>
-
-    //taskshare_list
-    <string name="action_sync">Submit</string>
-    <string name="action_logout">Log Out</string>
-    <string name="action_login">Log In</string>
-
     //activity_profile
     <string name="profile_title_logged_in">You are logged in as</string>
     <string name="profile_logout_button_label">Log out</string>
@@ -33,12 +18,9 @@
         completions."
     </string>
 
-    <string name="checklist_instruction">Inspect each listed component and verify it is in working order, place a check in the corresponding box of working component.</string>
     <string name="loginOrLogoutButton">Log in</string>
-    <string name="get_list_button">Get List of Task</string>
-    <string name="App_Info">Mobile Equipment Operator Pre-Op Inspection</string>
-    <string name="submit">Submit List</string>
-    <string name="App_warning">Any unchecked items will be considered faulty and require you to provide further information before being submitted.</string>
+    <string name="submit">Submited as Good</string>
     <string name="deleted">Deleted</string>
     <string name="undo">Undo</string>
+    <string name="current_profile">Profile</string>
 </resources>

@@ -2,7 +2,6 @@ package com.sagapp.teamtaskshare.ui.activity;
 
 import android.app.Activity;
 import android.content.Intent;
-import android.content.res.Resources;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -16,11 +15,20 @@ import android.widget.Toast;
 
 import com.hudomju.swipe.SwipeToDismissTouchListener;
 import com.hudomju.swipe.adapter.ListViewAdapter;
+import com.parse.ParseException;
+import com.parse.ParseUser;
+import com.parse.SaveCallback;
 import com.sagapp.teamtaskshare.R;
 import com.sagapp.teamtaskshare.TaskShare;
+import com.sagapp.teamtaskshare.TaskShareListApplication;
 
-import java.util.Arrays;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Collections;
+import java.util.HashMap;
+import java.util.Iterator;
 import java.util.List;
+import java.util.Map;
 
 
 /**
@@ -31,11 +39,7 @@ public class CheckListActivity extends Activity {
     private static final int LOGIN_ACTIVITY_CODE = 100;
     private static final int EDIT_ACTIVITY_CODE = 200;
 
-    //private ArrayAdapter<String> taskShareListAdapter;
-   // private LayoutInflater inflater;
-    //private ListView taskShareListView;
-    public static String[] mItems;
-    //private TaskShare taskShare;
+    private TaskShare taskShare;
 
 
     @Override
@@ -43,35 +47,14 @@ public class CheckListActivity extends Activity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_checklist);
         init((ListView) findViewById(R.id.taskShare_list_view));
-       // taskShareListView = (ListView) findViewById(R.id.taskShare_list_view);
-/*
-        // Set up the Parse query to use in the adapter
-        ParseQueryAdapter.QueryFactory<TaskShare> factory = new ParseQueryAdapter.QueryFactory<TaskShare>() {
-            public ParseQuery<TaskShare> create() {
-                ParseQuery<TaskShare> query = TaskShare.getQuery();
-                query.whereEqualTo("uploaded", false);
-                return query;
-            }
-        };
-
-        // Set up the adapter
-        inflater = (LayoutInflater) this
-                .getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-        taskShareListAdapter = new taskshareListAdapter(this, factory);
-
-
-        // Attach the query adapter to the view
-        ListView taskShareListView = (ListView) findViewById(R.id.taskShare_list_view);
-        taskShareListView.setAdapter(taskShareListAdapter);
-*/
     }
 
-    private void init(ListView taskShareListView){
-        final TaskBaseAdapter taskShareListAdapter = new TaskBaseAdapter();
-        taskShareListView.setAdapter(taskShareListAdapter);
+    private void init(ListView listView){
+        final TaskBaseAdapter adapter = new TaskBaseAdapter();
+        listView.setAdapter(adapter);
         final SwipeToDismissTouchListener<ListViewAdapter> touchListener =
                 new SwipeToDismissTouchListener<>(
-                        new ListViewAdapter(taskShareListView),
+                        new ListViewAdapter(listView),
                         new SwipeToDismissTouchListener.DismissCallbacks<ListViewAdapter>() {
                             @Override
                             public boolean canDismiss(int position) {
@@ -80,27 +63,27 @@ public class CheckListActivity extends Activity {
 
                             @Override
                             public void onDismiss(ListViewAdapter view, int position) {
-                                taskShareListAdapter.remove(position);
-
+                                adapter.remove(position);
                             }
                         });
-        taskShareListView.setOnTouchListener(touchListener);
+        listView.setOnTouchListener(touchListener);
         // Setting this scroll listener is required to ensure that during ListView scrolling,
         // we don't look for swipes.
-        taskShareListView.setOnScrollListener((AbsListView.OnScrollListener) touchListener.makeScrollListener());
-        taskShareListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+        listView.setOnScrollListener((AbsListView.OnScrollListener) touchListener.makeScrollListener());
+        listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 if (touchListener.existPendingDismisses()) {
                     touchListener.undoPendingDismiss();
                 } else {
                     Toast.makeText(CheckListActivity.this, "Position " + position, Toast.LENGTH_LONG).show();
+                    //openEditView();
                 }
             }
         });
     }
 
-    private void openEditView(TaskShare taskShare) {
+    private void openEditView() {
         Intent editIntent = new Intent(this,TaskShareEditActivity.class);
         editIntent.putExtra("ID", taskShare.getUuidString());
         startActivityForResult(editIntent, EDIT_ACTIVITY_CODE);
@@ -129,7 +112,7 @@ public class CheckListActivity extends Activity {
         }
     }
 
-/*    public SetTaskShare() {
+    private void submitTaskShare(){
 
         taskShare = new TaskShare();
         taskShare.setUploaded(false);
@@ -156,30 +139,32 @@ public class CheckListActivity extends Activity {
                     }
 
                 });
+
     }
-*/
+
      private class TaskBaseAdapter extends BaseAdapter {
 
+         ArrayList<HashMap<String, String>> mTaskSet = new ArrayList<>();
+         String[] mItems = getResources().getStringArray(R.array.tasklist);
+
+         TaskBaseAdapter(){
+             HashMap<String, String> map = new HashMap<>();
+            for (int i = 0; i < mItems.length; i++) {
+                map.put(mItems[i], mItems[i]);
+            }
+            mTaskSet.add(map);
+        }
 
 
-
-
-    public static void TaskBaseAdapter() {
-        List<String> mTaskSet = ArraysList<things>();
-    }
-    
-    private void things(){
-        mItems = getResources().getStringArray(R.array.tasklist);
-    }
-
-    @Override
+        @Override
         public int getCount() {
             return mTaskSet.size();
         }
 
         @Override
         public String getItem(int position) {
-            return mTaskSet.get(position);
+
+                return mTaskSet.get();
         }
 
         @Override
@@ -190,6 +175,9 @@ public class CheckListActivity extends Activity {
         public void remove(int position) {
             mTaskSet.remove(position);
             notifyDataSetChanged();
+            submitTaskShare();
+            Toast.makeText(CheckListActivity.this, "Position " + position, Toast.LENGTH_LONG).show();
+
         }
 
         private class ViewHolder {

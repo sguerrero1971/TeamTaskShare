@@ -15,37 +15,51 @@ public class TaskShare extends ParseObject {
 	}
 	
 	public void setTask(String title) {
-		put("task", title);
+        put("task", title);
 	}
 	
 	public ParseUser getAuthor() {
-		return getParseUser("author");
+        return getParseUser("author");
 	}
 	
 	public void setAuthor(ParseUser currentUser) {
-		put("author", currentUser);
+        put("author", currentUser);
 	}
 	
-	public boolean status() {
-		return getBoolean("status");
+	public boolean Status() {
+        return getBoolean("status");
 	}
 	
 	public void setStatus(boolean status) {
-		put("status", status);
+        put("status", status);
 	}
+
+    public String getShift(){
+        return getString("shift");
+    }
+
+    public void setShift(String shift){
+        put("shift", shift);
+    }
 
 	public void setUuidString() {
 	    UUID uuid = UUID.randomUUID();
 	    put("uuid", uuid.toString());
 	}
 	
-	public String getUuidString() {return getString("uuid");}
+	public String getUuidString() {
+        return getString("uuid");
+    }
 
-	public boolean uploaded() {return getBoolean("uploaded");}
+	public boolean uploaded() {
+        return getBoolean("uploaded");
+    }
 
-	public void setUploaded(boolean uploaded) { put("uploaded", uploaded);}
+	public void setUploaded(boolean uploaded) {
+        put("uploaded", uploaded);
+    }
 	
 	public static ParseQuery<TaskShare> getQuery() {
-		return ParseQuery.getQuery(TaskShare.class);
+        return ParseQuery.getQuery(TaskShare.class);
 	}
 }
