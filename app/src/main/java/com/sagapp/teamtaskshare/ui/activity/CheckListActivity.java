@@ -22,13 +22,8 @@ import com.sagapp.teamtaskshare.R;
 import com.sagapp.teamtaskshare.TaskShare;
 import com.sagapp.teamtaskshare.TaskShareListApplication;
 
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.Collections;
-import java.util.HashMap;
-import java.util.Iterator;
+import java.util.Arrays;
 import java.util.List;
-import java.util.Map;
 
 
 /**
@@ -112,7 +107,7 @@ public class CheckListActivity extends Activity {
         }
     }
 
-    private void submitTaskShare(){
+    private void submitTaskShare(String mItem){
 
         taskShare = new TaskShare();
         taskShare.setUploaded(false);
@@ -144,16 +139,20 @@ public class CheckListActivity extends Activity {
 
      private class TaskBaseAdapter extends BaseAdapter {
 
-         ArrayList<HashMap<String, String>> mTaskSet = new ArrayList<>();
          String[] mItems = getResources().getStringArray(R.array.tasklist);
+         List<String> mTaskSet = Arrays.asList(mItems);
+
+/*         Map<String, Integer> map = new HashMap<>();
+         for(int i = 0; i < (mItems.length); i++) {
+             map.put(mItems[i], i);
+         }*/
+
+        // Set<Map.Entry<String, Integer>> set = map.entrySet();
 
          TaskBaseAdapter(){
-             HashMap<String, String> map = new HashMap<>();
-            for (int i = 0; i < mItems.length; i++) {
-                map.put(mItems[i], mItems[i]);
-            }
-            mTaskSet.add(map);
-        }
+
+         }
+
 
 
         @Override
@@ -163,9 +162,9 @@ public class CheckListActivity extends Activity {
 
         @Override
         public String getItem(int position) {
-
-                return mTaskSet.get();
+                return mTaskSet.get(position);
         }
+
 
         @Override
         public long getItemId(int position) {
@@ -175,9 +174,10 @@ public class CheckListActivity extends Activity {
         public void remove(int position) {
             mTaskSet.remove(position);
             notifyDataSetChanged();
-            submitTaskShare();
-            Toast.makeText(CheckListActivity.this, "Position " + position, Toast.LENGTH_LONG).show();
-
+/*            for(Map.Entry<String, Integer> mItem: set){
+                submitTaskShare(mItem.getKey());
+            } */
+            Toast.makeText(CheckListActivity.this, "Position" + mItems, Toast.LENGTH_LONG).show();
         }
 
         private class ViewHolder {
