@@ -23,7 +23,10 @@ import com.sagapp.teamtaskshare.TaskShare;
 import com.sagapp.teamtaskshare.TaskShareListApplication;
 
 import java.util.Arrays;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
+import java.util.Set;
 
 
 /**
@@ -142,12 +145,12 @@ public class CheckListActivity extends Activity {
          String[] mItems = getResources().getStringArray(R.array.tasklist);
          List<String> mTaskSet = Arrays.asList(mItems);
 
-/*         Map<String, Integer> map = new HashMap<>();
-         for(int i = 0; i < (mItems.length); i++) {
-             map.put(mItems[i], i);
-         }*/
+         Map<String, Integer> map = new HashMap<>();
+             for(int i = 0; i < mItems.length; i++) {
+                 map.put(mItems[i], i);
+             }
 
-        // Set<Map.Entry<String, Integer>> set = map.entrySet();
+         Set<Map.Entry<String, Integer>> set = map.entrySet();
 
          TaskBaseAdapter(){
 
@@ -174,9 +177,9 @@ public class CheckListActivity extends Activity {
         public void remove(int position) {
             mTaskSet.remove(position);
             notifyDataSetChanged();
-/*            for(Map.Entry<String, Integer> mItem: set){
+            for(Map.Entry<String, Integer> mItem: set){
                 submitTaskShare(mItem.getKey());
-            } */
+            }
             Toast.makeText(CheckListActivity.this, "Position" + mItems, Toast.LENGTH_LONG).show();
         }
 
