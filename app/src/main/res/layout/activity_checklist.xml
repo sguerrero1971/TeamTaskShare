@@ -10,4 +10,14 @@
         android:layout_gravity="center_vertical"
         android:id="@+id/taskShare_list_view"/>
 
+    <TextView
+        android:id="@+id/emptyText"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:text="All Systems Go!"
+        android:textColor="@color/yellow"
+        android:textSize="19.0dp"
+        android:visibility="gone"
+        android:layout_gravity="center"/>
+
 </LinearLayout>

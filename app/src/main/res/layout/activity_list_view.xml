@@ -14,7 +14,7 @@
         android:paddingLeft="@dimen/list_item_padding_sides"
         android:paddingRight="@dimen/list_item_padding_sides"
         android:id="@+id/txt_data"
-        android:background="@android:color/white"/>
+        android:background="@color/colorPrimaryDark"/>
 
 
     <LinearLayout
@@ -36,7 +36,7 @@
             android:clickable="false"
             android:layout_weight="2"
             android:hapticFeedbackEnabled="true"
-            android:textColor="@android:color/white"/>
+            android:textColor="@color/blue"/>
 
         <TextView
             android:layout_width="0dp"
@@ -46,7 +46,7 @@
             android:text="@string/undo"
             android:clickable="false"
             android:layout_weight="1"
-            android:textColor="@color/yellow"/>
+            android:textColor="@color/orange_red"/>
 
     </LinearLayout>
 

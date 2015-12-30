@@ -19,7 +19,7 @@
     </string>
 
     <string name="loginOrLogoutButton">Log in</string>
-    <string name="submit">Submited as Good</string>
+    <string name="submit">Swipe to submit as Good</string>
     <string name="deleted">Deleted</string>
     <string name="undo">Undo</string>
     <string name="current_profile">Profile</string>

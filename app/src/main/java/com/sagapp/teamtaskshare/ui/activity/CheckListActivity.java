@@ -22,6 +22,7 @@ import com.sagapp.teamtaskshare.R;
 import com.sagapp.teamtaskshare.TaskShare;
 import com.sagapp.teamtaskshare.TaskShareListApplication;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
@@ -50,6 +51,7 @@ public class CheckListActivity extends Activity {
     private void init(ListView listView){
         final TaskBaseAdapter adapter = new TaskBaseAdapter();
         listView.setAdapter(adapter);
+        listView.setEmptyView(findViewById(R.id.emptyText));
         final SwipeToDismissTouchListener<ListViewAdapter> touchListener =
                 new SwipeToDismissTouchListener<>(
                         new ListViewAdapter(listView),
@@ -83,7 +85,7 @@ public class CheckListActivity extends Activity {
 
     private void openEditView() {
         Intent editIntent = new Intent(this,TaskShareEditActivity.class);
-        editIntent.putExtra("ID", taskShare.getUuidString());
+        editIntent.putExtra("Item", taskShare.getTask());
         startActivityForResult(editIntent, EDIT_ACTIVITY_CODE);
     }
 
@@ -128,7 +130,7 @@ public class CheckListActivity extends Activity {
                         }
                         if (e == null) {
                             setResult(Activity.RESULT_OK);
-                            finish();
+                            // finish();
                         } else {
                             Toast.makeText(getApplicationContext(),
                                     "Error saving: " + e.getMessage(),
@@ -143,19 +145,16 @@ public class CheckListActivity extends Activity {
      private class TaskBaseAdapter extends BaseAdapter {
 
          String[] mItems = getResources().getStringArray(R.array.tasklist);
-         List<String> mTaskSet = Arrays.asList(mItems);
+         List<String> mTaskSet = new ArrayList<>(Arrays.asList(mItems));
 
          Map<String, Integer> map = new HashMap<>();
-             for(int i = 0; i < mItems.length; i++) {
-                 map.put(mItems[i], i);
-             }
-
          Set<Map.Entry<String, Integer>> set = map.entrySet();
 
          TaskBaseAdapter(){
-
+             for(int i = 0; i < mItems.length; i++){
+                 map.put(mItems[i], i);
+             }
          }
-
 
 
         @Override
@@ -175,12 +174,12 @@ public class CheckListActivity extends Activity {
         }
 
         public void remove(int position) {
-            mTaskSet.remove(position);
-            notifyDataSetChanged();
             for(Map.Entry<String, Integer> mItem: set){
                 submitTaskShare(mItem.getKey());
             }
-            Toast.makeText(CheckListActivity.this, "Position" + mItems, Toast.LENGTH_LONG).show();
+            mTaskSet.remove(position);
+            notifyDataSetChanged();
+
         }
 
         private class ViewHolder {
