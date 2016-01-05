@@ -5,8 +5,6 @@ import android.content.Intent;
 import android.graphics.Bitmap;
 import android.net.Uri;
 import android.os.Bundle;
-import android.os.Environment;
-import android.provider.MediaStore;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -16,8 +14,6 @@ import android.widget.RadioGroup;
 import android.widget.TextView;
 
 import com.sagapp.teamtaskshare.R;
-
-import java.io.File;
 
 /**
  * Created by SolarUser on 12/14/2015.
@@ -32,7 +28,7 @@ public class TaskShareEditActivity extends Activity {
     RadioButton usable;
     RadioButton notUsable;
     private Uri imageUri;
-    private static final int CAMERA_REQUEST = 1971;
+    static final int REQUEST_IMAGE_CAPTURE = 1;
     private static boolean status;
     private ImageView imageView;
 
@@ -57,13 +53,11 @@ public class TaskShareEditActivity extends Activity {
 
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent("android.provider.media.action.IMAGE_CAPTURE");
-                File photo = new File(Environment.getExternalStorageDirectory(),  "TaskShare.jpg");
-                intent.putExtra(MediaStore.EXTRA_OUTPUT,
-                        Uri.fromFile(photo));
-                imageUri = Uri.fromFile(photo);
-                startActivity(intent, CAMERA_REQUEST);
+                Intent intent = new Intent("MediaStore.ACTION_IMAGE_CAPTURE");
+                if(intent.resolveActivity(getPackageManager()) != null){
+                startActivityForResult(intent, REQUEST_IMAGE_CAPTURE);
             }
+        }
         });
 
         submitButton.setOnClickListener(new View.OnClickListener() {
@@ -92,7 +86,7 @@ public class TaskShareEditActivity extends Activity {
     }
 
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-        if (requestCode == CAMERA_REQUEST && resultCode == RESULT_OK) {
+        if (requestCode == REQUEST_IMAGE_CAPTURE && resultCode == RESULT_OK) {
             Bitmap photo = (Bitmap) data.getExtras().get("data");
             imageView.setImageBitmap(photo);
         }

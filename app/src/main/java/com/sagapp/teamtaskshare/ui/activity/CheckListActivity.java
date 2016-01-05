@@ -126,7 +126,7 @@ public class CheckListActivity extends Activity {
         if(EMPTY_LIST == 0) {
             taskShare = new TaskShare();
             taskShare.setUploaded(false);
-            taskShare.setFaultText(mEdit);
+            taskShare.setFaultText(mEdit); //I need to add code to allow me to set this from the swipe.
             taskShare.setUuidString();
             taskShare.setTask(mItem);
             taskShare.setStatus(status);
