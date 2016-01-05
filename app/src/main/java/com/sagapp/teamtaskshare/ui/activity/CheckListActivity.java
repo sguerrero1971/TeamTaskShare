@@ -36,11 +36,11 @@ import java.util.List;
  */
 public class CheckListActivity extends Activity {
 
-    private static final int LOGIN_ACTIVITY_CODE = 100;
     private static final int EDIT_ACTIVITY_CODE = 200;
     private static int EMPTY_LIST = 0;
+    private int currentPosition;
     private TaskShare taskShare;
-    private String mItem;
+    private String currentItem;
     private String mEdit;
     private String imageUri;
     private boolean status;
@@ -82,7 +82,8 @@ public class CheckListActivity extends Activity {
                 if (touchListener.existPendingDismisses()) {
                     touchListener.undoPendingDismiss();
                 } else {
-                    Toast.makeText(CheckListActivity.this, "Position " + position, Toast.LENGTH_LONG).show();
+                    currentItem = adapter.getItem(position);
+                    currentPosition = position;
                     openEditView();
                 }
             }
@@ -91,42 +92,37 @@ public class CheckListActivity extends Activity {
 
     private void openEditView() {
         Intent editIntent = new Intent(this,TaskShareEditActivity.class);
-        editIntent.putExtra("mItem", mItem );
+        editIntent.putExtra("currentItem", currentItem);
+        editIntent.putExtra("position", currentPosition);
         startActivityForResult(editIntent, EDIT_ACTIVITY_CODE);
     }
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-        // An OK result means the pinned dataset changed or
-        // log in was successful
-        if (resultCode == RESULT_OK) {
-            if (requestCode == EDIT_ACTIVITY_CODE) {
+        if (requestCode == EDIT_ACTIVITY_CODE && resultCode == RESULT_OK && data != null) {
                 // Coming back from the edit view, update the view
-                Intent intent = getIntent();
-                mEdit = intent.getStringExtra(String.valueOf(TaskShareEditActivity.mEdit));
-                status = Boolean.parseBoolean(intent.getStringExtra("status"));
-                imageUri = intent.getStringExtra("imageUri");
+                currentItem = data.getStringExtra("currentItem");
+                mEdit = data.getStringExtra("mEdit");
+                status = data.getBooleanExtra("status", status);
+                imageUri = data.getStringExtra("imageUri");
+                currentPosition = data.getIntExtra("position", currentPosition);
+
+                Toast.makeText(CheckListActivity.this, currentItem + mEdit + status + imageUri + currentPosition, Toast.LENGTH_LONG).show();
+
+                // adapter.remove(currentPosition);
                // taskShareListAdapter.loadObjects();
-            } else if (requestCode == LOGIN_ACTIVITY_CODE) {
-                // If the user is new, create local datastore
-
-
-               // for (String mItem : mItems) {
-
-
-
-               // }
             }
-
         }
-    }
 
     private void submitTaskShare(String mItem){
         if(EMPTY_LIST == 0) {
             taskShare = new TaskShare();
             taskShare.setUploaded(false);
-            taskShare.setFaultText(mEdit); //I need to add code to allow me to set this from the swipe.
+            if (mEdit == null){
+                mEdit = mItem + " is working properly";
+            }
+            taskShare.setFaultText(mEdit);
             taskShare.setUuidString();
             taskShare.setTask(mItem);
             taskShare.setStatus(status);
@@ -172,7 +168,7 @@ public class CheckListActivity extends Activity {
                                         //  taskShareListAdapter
                                         //        .notifyDataSetChanged();
 
-                                    }else {
+                                    } else {
                                         // Reset the is status flag locally
                                         // to false
                                         taskShare.setStatus(false);
@@ -200,6 +196,7 @@ public class CheckListActivity extends Activity {
 
 
          TaskBaseAdapter(){
+
          }
 
         @Override
@@ -212,7 +209,7 @@ public class CheckListActivity extends Activity {
 
         @Override
         public String getItem(int position) {
-                return mTaskSet.get(position);
+            return mTaskSet.get(position);
         }
 
 
