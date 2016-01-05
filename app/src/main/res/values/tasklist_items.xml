@@ -5,6 +5,7 @@
         <item>Horn</item>
         <item>Glass Wipers</item>
         <item>Seatbelt</item>
+        <!--
         <item>Lights</item>
         <item>Mirrors</item>
         <item>Door Latches</item>
@@ -21,7 +22,7 @@
         <item>Radiator</item>
         <item>Differential</item>
         <item>Transmission</item>
-        <item>SCSR</item>
+        <item>SCSR</item> -->
     </string-array>
 
     <string-array name="shift">

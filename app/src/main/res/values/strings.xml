@@ -23,4 +23,8 @@
     <string name="deleted">Deleted</string>
     <string name="undo">Undo</string>
     <string name="current_profile">Profile</string>
+    <string name="issue_description">Supply a brief description of the issue</string>
+    <string name="submit_button">Submit</string>
+    <string name="camera_button">Take a Picture</string>
+    <string name="camera_image">camera_image</string>
 </resources>

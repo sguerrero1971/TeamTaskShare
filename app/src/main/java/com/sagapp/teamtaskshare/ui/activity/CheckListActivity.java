@@ -3,6 +3,7 @@ package com.sagapp.teamtaskshare.ui.activity;
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -15,7 +16,10 @@ import android.widget.Toast;
 
 import com.hudomju.swipe.SwipeToDismissTouchListener;
 import com.hudomju.swipe.adapter.ListViewAdapter;
+import com.parse.FindCallback;
 import com.parse.ParseException;
+import com.parse.ParseObject;
+import com.parse.ParseQuery;
 import com.parse.ParseUser;
 import com.parse.SaveCallback;
 import com.sagapp.teamtaskshare.R;
@@ -24,10 +28,7 @@ import com.sagapp.teamtaskshare.TaskShareListApplication;
 
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
-import java.util.Set;
 
 
 /**
@@ -37,8 +38,13 @@ public class CheckListActivity extends Activity {
 
     private static final int LOGIN_ACTIVITY_CODE = 100;
     private static final int EDIT_ACTIVITY_CODE = 200;
-
+    private static int EMPTY_LIST = 0;
     private TaskShare taskShare;
+    private String mItem;
+    private String mEdit;
+    private String imageUri;
+    private boolean status;
+
 
 
     @Override
@@ -77,7 +83,7 @@ public class CheckListActivity extends Activity {
                     touchListener.undoPendingDismiss();
                 } else {
                     Toast.makeText(CheckListActivity.this, "Position " + position, Toast.LENGTH_LONG).show();
-                    //openEditView();
+                    openEditView();
                 }
             }
         });
@@ -85,7 +91,7 @@ public class CheckListActivity extends Activity {
 
     private void openEditView() {
         Intent editIntent = new Intent(this,TaskShareEditActivity.class);
-        editIntent.putExtra("Item", taskShare.getTask());
+        editIntent.putExtra("mItem", mItem );
         startActivityForResult(editIntent, EDIT_ACTIVITY_CODE);
     }
 
@@ -97,6 +103,10 @@ public class CheckListActivity extends Activity {
         if (resultCode == RESULT_OK) {
             if (requestCode == EDIT_ACTIVITY_CODE) {
                 // Coming back from the edit view, update the view
+                Intent intent = getIntent();
+                mEdit = intent.getStringExtra(String.valueOf(TaskShareEditActivity.mEdit));
+                status = Boolean.parseBoolean(intent.getStringExtra("status"));
+                imageUri = intent.getStringExtra("imageUri");
                // taskShareListAdapter.loadObjects();
             } else if (requestCode == LOGIN_ACTIVITY_CODE) {
                 // If the user is new, create local datastore
@@ -113,33 +123,74 @@ public class CheckListActivity extends Activity {
     }
 
     private void submitTaskShare(String mItem){
+        if(EMPTY_LIST == 0) {
+            taskShare = new TaskShare();
+            taskShare.setUploaded(false);
+            taskShare.setFaultText(mEdit);
+            taskShare.setUuidString();
+            taskShare.setTask(mItem);
+            taskShare.setStatus(status);
+            taskShare.setAuthor(ParseUser.getCurrentUser());
+            taskShare.pinInBackground(TaskShareListApplication.TASKSHARE_GROUP_NAME,
+                    new SaveCallback() {
 
-        taskShare = new TaskShare();
-        taskShare.setUploaded(false);
-        taskShare.setUuidString();
-        taskShare.setTask(mItem);
-        taskShare.setStatus(true);
-        taskShare.setAuthor(ParseUser.getCurrentUser());
-        taskShare.pinInBackground(TaskShareListApplication.TASKSHARE_GROUP_NAME,
-                new SaveCallback() {
+                        @Override
+                        public void done(ParseException e) {
+                            if (isFinishing()) {
+                                return;
+                            }
+                            if (e == null) {
+                                setResult(Activity.RESULT_OK);
+                                // finish();
+                            } else {
+                                Toast.makeText(getApplicationContext(),
+                                        "Error saving: " + e.getMessage(),
+                                        Toast.LENGTH_LONG).show();
+                            }
+                        }
 
-                    @Override
-                    public void done(ParseException e) {
-                        if (isFinishing()) {
-                            return;
+                    });
+        }else {
+            ParseQuery<TaskShare> query = TaskShare.getQuery();
+            query.fromPin(TaskShareListApplication.TASKSHARE_GROUP_NAME);
+            query.whereEqualTo("uploaded", false);
+            query.findInBackground(new FindCallback<TaskShare>() {
+                public void done(List<TaskShare> taskShares, ParseException e) {
+                    if (e == null) {
+                        for (final TaskShare taskShare : taskShares) {
+                            // Set the status flag to true before
+                            // syncing to Parse
+                            taskShare.setStatus(true);
+                            taskShare.saveInBackground(new SaveCallback() {
+
+                                @Override
+                                public void done(ParseException e) {
+                                    if (e == null) {
+                                        ParseObject.unpinAllInBackground(TaskShareListApplication.TASKSHARE_GROUP_NAME);
+                                        // Let adapter know to update view
+                                        //if (!isFinishing()) {
+                                        //  taskShareListAdapter
+                                        //        .notifyDataSetChanged();
+
+                                    }else {
+                                        // Reset the is status flag locally
+                                        // to false
+                                        taskShare.setStatus(false);
+                                    }
+                                }
+
+                            });
+
                         }
-                        if (e == null) {
-                            setResult(Activity.RESULT_OK);
-                            // finish();
-                        } else {
-                            Toast.makeText(getApplicationContext(),
-                                    "Error saving: " + e.getMessage(),
-                                    Toast.LENGTH_LONG).show();
-                        }
+                    } else {
+                        Log.i("TaskShareActivity",
+                                "syncTaskShareToParse: Error finding pinned taskShares: "
+                                        + e.getMessage());
                     }
+                }
+            });
 
-                });
-
+        }
     }
 
      private class TaskBaseAdapter extends BaseAdapter {
@@ -147,18 +198,15 @@ public class CheckListActivity extends Activity {
          String[] mItems = getResources().getStringArray(R.array.tasklist);
          List<String> mTaskSet = new ArrayList<>(Arrays.asList(mItems));
 
-         Map<String, Integer> map = new HashMap<>();
-         Set<Map.Entry<String, Integer>> set = map.entrySet();
 
          TaskBaseAdapter(){
-             for(int i = 0; i < mItems.length; i++){
-                 map.put(mItems[i], i);
-             }
          }
-
 
         @Override
         public int getCount() {
+            if(mTaskSet.size()==0){
+                EMPTY_LIST = 1;
+            }
             return mTaskSet.size();
         }
 
@@ -174,9 +222,8 @@ public class CheckListActivity extends Activity {
         }
 
         public void remove(int position) {
-            for(Map.Entry<String, Integer> mItem: set){
-                submitTaskShare(mItem.getKey());
-            }
+            String mItem = mTaskSet.get(position);
+            submitTaskShare(mItem);
             mTaskSet.remove(position);
             notifyDataSetChanged();
 

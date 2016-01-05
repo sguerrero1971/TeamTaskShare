@@ -58,6 +58,8 @@ public class TaskShare extends ParseObject {
 	public void setUploaded(boolean uploaded) {
         put("uploaded", uploaded);
     }
+
+	public void setFaultText(String faultText) {put(faultText, faultText);}
 	
 	public static ParseQuery<TaskShare> getQuery() {
         return ParseQuery.getQuery(TaskShare.class);
