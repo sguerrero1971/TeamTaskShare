@@ -44,7 +44,7 @@ public class CheckListActivity extends Activity {
     private String mEdit;
     private String imageUri;
     private boolean status;
-
+    private TaskBaseAdapter adapter;
 
 
     @Override
@@ -52,10 +52,11 @@ public class CheckListActivity extends Activity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_checklist);
         init((ListView) findViewById(R.id.taskShare_list_view));
+
     }
 
     private void init(ListView listView){
-        final TaskBaseAdapter adapter = new TaskBaseAdapter();
+        adapter = new TaskBaseAdapter();
         listView.setAdapter(adapter);
         listView.setEmptyView(findViewById(R.id.emptyText));
         final SwipeToDismissTouchListener<ListViewAdapter> touchListener =
@@ -102,15 +103,13 @@ public class CheckListActivity extends Activity {
         super.onActivityResult(requestCode, resultCode, data);
         if (requestCode == EDIT_ACTIVITY_CODE && resultCode == RESULT_OK && data != null) {
                 // Coming back from the edit view, update the view
-                currentItem = data.getStringExtra("currentItem");
-                mEdit = data.getStringExtra("mEdit");
-                status = data.getBooleanExtra("status", status);
-                imageUri = data.getStringExtra("imageUri");
-                currentPosition = data.getIntExtra("position", currentPosition);
-
-                Toast.makeText(CheckListActivity.this, currentItem + mEdit + status + imageUri + currentPosition, Toast.LENGTH_LONG).show();
-
-                // adapter.remove(currentPosition);
+            currentItem = data.getStringExtra("currentItem");
+            mEdit = data.getStringExtra("mEdit");
+            status = data.getBooleanExtra("status", status);
+            imageUri = data.getStringExtra("imageUri");
+            currentPosition = data.getIntExtra("position", currentPosition);
+            Toast.makeText(CheckListActivity.this, currentItem + mEdit + status + imageUri + currentPosition, Toast.LENGTH_LONG).show();
+            adapter.remove(currentPosition);
                // taskShareListAdapter.loadObjects();
             }
         }
@@ -123,6 +122,9 @@ public class CheckListActivity extends Activity {
                 mEdit = mItem + " is working properly";
             }
             taskShare.setFaultText(mEdit);
+            if (imageUri != null){
+
+            }
             taskShare.setUuidString();
             taskShare.setTask(mItem);
             taskShare.setStatus(status);
