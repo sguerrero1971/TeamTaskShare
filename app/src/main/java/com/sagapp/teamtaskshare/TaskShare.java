@@ -1,6 +1,7 @@
 package com.sagapp.teamtaskshare;
 
 import com.parse.ParseClassName;
+import com.parse.ParseFile;
 import com.parse.ParseObject;
 import com.parse.ParseQuery;
 import com.parse.ParseUser;
@@ -60,6 +61,11 @@ public class TaskShare extends ParseObject {
     }
 
 	public void setFaultText(String faultText) {put(faultText, faultText);}
+
+
+	public void setImageFile(String imageFileName, ParseFile dataFile) {
+		put(imageFileName, dataFile);
+	}
 	
 	public static ParseQuery<TaskShare> getQuery() {
         return ParseQuery.getQuery(TaskShare.class);

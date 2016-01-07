@@ -49,6 +49,7 @@ public class TaskShareEditActivity extends Activity {
     private Bitmap mImageBitmap;
     private String mCurrentPhotoPath;
     private ImageView mImageView;
+    private String imageFileName;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -68,7 +69,7 @@ public class TaskShareEditActivity extends Activity {
         currentItem = intent.getStringExtra("currentItem");
         currentPosition = intent.getIntExtra("position", currentPosition);
 
-        Toast.makeText(TaskShareEditActivity.this, currentItem + currentPosition, Toast.LENGTH_LONG).show();
+        // Toast.makeText(TaskShareEditActivity.this, currentItem + currentPosition, Toast.LENGTH_LONG).show();
 
         cameraButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -113,6 +114,7 @@ public class TaskShareEditActivity extends Activity {
                 returnIntent.putExtra("currentItem", currentItem);
                 returnIntent.putExtra("mEdit", mEdit);
                 returnIntent.putExtra("status", status);
+                returnIntent.putExtra("imageFileName",imageFileName);
                 returnIntent.putExtra("imageUri", mCurrentPhotoPath);
                 returnIntent.putExtra("position", currentPosition);
                 setResult(RESULT_OK, returnIntent);
@@ -127,6 +129,7 @@ public class TaskShareEditActivity extends Activity {
         // Create an image file name
         String timeStamp = new SimpleDateFormat("yyyyMMdd_HHmmss").format(new Date());
         String imageFileName = "JPEG_" + timeStamp + "_";
+        this.imageFileName = imageFileName;
         File storageDir = Environment.getExternalStoragePublicDirectory(
                 Environment.DIRECTORY_PICTURES);
         File image = File.createTempFile(
