@@ -25,9 +25,20 @@
         <item>SCSR</item> -->
     </string-array>
 
-    <string-array name="shift">
-        <item>Day</item>
-        <item>Night</item>
+    <string-array name="locations">
+        <item>Antioch</item>
+        <item>Carbandale</item>
+        <item>Charger</item>
+        <item>Ireland</item>
+        <item>Lewis</item>
+        <item>Petersburg</item>
+    </string-array>
+
+    <string-array name="equiment_types">
+        <item>Loader</item>
+        <item>Shovel</item>
+        <item>Haul Truck</item>
+        <item>Coal Truck</item>
     </string-array>
 
 </resources>

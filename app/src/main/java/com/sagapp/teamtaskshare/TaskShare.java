@@ -35,11 +35,11 @@ public class TaskShare extends ParseObject {
         put("status", status);
 	}
 
-    public String getShift(){
-        return getString("shift");
+    public boolean getShift(){
+        return getBoolean("shift");
     }
 
-    public void setShift(String shift){
+    public void setShift(boolean shift){
         put("shift", shift);
     }
 

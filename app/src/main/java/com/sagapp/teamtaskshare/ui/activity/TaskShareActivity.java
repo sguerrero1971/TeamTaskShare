@@ -3,6 +3,8 @@ package com.sagapp.teamtaskshare.ui.activity;
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
@@ -21,6 +23,9 @@ public class TaskShareActivity extends Activity {
     private TextView titleTextView;
     private TextView emailTextView;
     private TextView nameTextView;
+    private boolean profileCompleted = false;
+    private String email;
+    private String fullName;
     private Button loginOrLogoutButton;
     public ParseUser currentUser = ParseUser.getCurrentUser();
 
@@ -36,7 +41,11 @@ public class TaskShareActivity extends Activity {
         nameTextView = (TextView) findViewById(R.id.profile_name);
         titleTextView.setText(R.string.profile_title_logged_out);
 
-        if(currentUser != null){
+        if (profileCompleted == false) {
+            fillInProfile();
+        }
+
+        if(currentUser != null && profileCompleted == true){
             Intent myIntent = new Intent(this, CheckListActivity.class);
             startActivity(myIntent);
         }
@@ -89,7 +98,7 @@ public class TaskShareActivity extends Activity {
         }
     }
 
- /*
+
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.taskshare_list, menu);
@@ -100,30 +109,36 @@ public class TaskShareActivity extends Activity {
     public boolean onOptionsItemSelected(MenuItem item) {
         currentUser = ParseUser.getCurrentUser();
 
-        if (item.getItemId() == R.id.action_sync) {
-            TaskSync.syncTaskListToParse(this);
+        switch(item.getItemId()) {
+            case R.id.menu_item1:
+                Intent intent = new Intent(this, TaskShareUserProfileActivity.class);
+                this.startActivity(intent);
+                break;
+            case R.id.menu_item2:
+                // another startActivity, this is for item with id "menu_item2"
+                break;
+            default:
+                return super.onOptionsItemSelected(item);
         }
 
-        if (item.getItemId() == R.id.action_logout) {
-            // Log out the current user
-            showProfileLoggedOut();
-            // Clear the view
-            taskShareListAdapter.clear();
-        }
-
-        if (item.getItemId() == R.id.action_login) {
-            showProfileLoggedIn();
-        }
-
-        return super.onOptionsItemSelected(item);
+        return true;
     }
 
-*/
 
+
+
+    private void fillInProfile() {
+        email = currentUser.getEmail();
+        fullName = currentUser.getString("name");
+        Intent profileIntent = new Intent(this, TaskShareUserProfileActivity.class);
+        profileIntent.putExtra("fullName", fullName);
+        profileIntent.putExtra("email", email);
+        startActivity(profileIntent);
+    }
 
     /**
      * Shows the profile of the given user.
-     */
+
     private void showProfileLoggedIn() {
         titleTextView.setText(R.string.profile_title_logged_in);
         emailTextView.setText(currentUser.getEmail());
@@ -133,6 +148,7 @@ public class TaskShareActivity extends Activity {
         }
         loginOrLogoutButton.setText(R.string.profile_logout_button_label);
     }
+     */
 
     /**
      * Show a message asking the user to log in, toggle login/logout button text.

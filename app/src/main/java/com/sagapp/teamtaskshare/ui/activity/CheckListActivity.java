@@ -131,7 +131,7 @@ public class CheckListActivity extends Activity {
                 e.printStackTrace();
             }
                 ByteArrayOutputStream stream = new ByteArrayOutputStream();
-                bmp.compress(Bitmap.CompressFormat.PNG, 100, stream);
+                bmp.compress(Bitmap.CompressFormat.PNG, 50, stream);
                 pFile = new ParseFile(imageFileName, stream.toByteArray());
                 try {
                     pFile.save();

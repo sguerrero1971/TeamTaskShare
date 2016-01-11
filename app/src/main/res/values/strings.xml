@@ -27,4 +27,12 @@
     <string name="submit_button">Submit</string>
     <string name="camera_button">Take a Picture</string>
     <string name="camera_image">camera_image</string>
+    <string name="fullName">fullName</string>
+    <string name="equipment_type">Select your equipment type from the list below</string>
+    <string name="location">Please choose your location</string>
+    <string name="profile_night_shift">Night Shift</string>
+    <string name="profile_day_shift">Day Shift</string>
+    <string name="profile_radio_group">Please select your shift</string>
+    <string name="profile_unit_hint">Please enter your unit number</string>
+    <string name="save">Save</string>
 </resources>
