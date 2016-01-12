@@ -60,7 +60,7 @@ public class TaskShare extends ParseObject {
         put("uploaded", uploaded);
     }
 
-	public void setFaultText(String faultText) {put(faultText, faultText);}
+	public void setFaultText(String faultText) {put("faultText", faultText);}
 
 
 	public void setImageFile(String imageFileName, ParseFile dataFile) {

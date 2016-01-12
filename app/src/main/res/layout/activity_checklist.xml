@@ -10,13 +10,13 @@
         android:layout_gravity="center_vertical"
         android:id="@+id/taskShare_list_view"/>
 
-    <TextView
+    <Button
         android:id="@+id/emptyText"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:text="All Systems Go!"
+        android:text="@string/push_to_parse"
         android:textColor="@color/yellow"
-        android:textSize="19.0dp"
+        android:textSize="20dp"
         android:visibility="gone"
         android:layout_gravity="center"/>
 

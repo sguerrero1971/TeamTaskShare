@@ -13,6 +13,7 @@ import android.view.ViewGroup;
 import android.widget.AbsListView;
 import android.widget.AdapterView;
 import android.widget.BaseAdapter;
+import android.widget.Button;
 import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -44,7 +45,7 @@ import java.util.List;
 public class CheckListActivity extends Activity {
 
     private static final int EDIT_ACTIVITY_CODE = 200;
-    private static int EMPTY_LIST = 1;
+    private static int EMPTY_LIST = 0;
     private int currentPosition;
     private TaskShare taskShare;
     private String currentItem;
@@ -55,6 +56,7 @@ public class CheckListActivity extends Activity {
     private TaskBaseAdapter adapter;
     Bitmap bmp;
     ParseFile pFile = null ;
+    TextView empty;
 
 
 
@@ -63,7 +65,16 @@ public class CheckListActivity extends Activity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_checklist);
         init((ListView) findViewById(R.id.taskShare_list_view));
+        empty = (Button) findViewById(R.id.emptyText);
 
+        empty.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                EMPTY_LIST = 1;
+                submitTaskShare("completed");
+                finish();
+            }
+        });
     }
 
     private void init(ListView listView){
@@ -142,7 +153,7 @@ public class CheckListActivity extends Activity {
                 }
             }
             currentPosition = data.getIntExtra("position", currentPosition);
-           // Toast.makeText(CheckListActivity.this, currentItem + mEdit + status + imageUri + currentPosition, Toast.LENGTH_LONG).show();
+            Toast.makeText(CheckListActivity.this, currentItem + mEdit + status + imageUri + currentPosition, Toast.LENGTH_LONG).show();
             adapter.remove(currentPosition);
             }else {
             adapter.notifyDataSetChanged();
@@ -154,10 +165,9 @@ public class CheckListActivity extends Activity {
         if(EMPTY_LIST == 0) {
             taskShare = new TaskShare();
             taskShare.setUploaded(false);
-            if (mEdit == null){
-                mEdit = mItem + " is working properly";
+            if (mEdit != null){
+                taskShare.setFaultText(mEdit);
             }
-            taskShare.setFaultText(mEdit);
             if (imageFileName != null) {
                 taskShare.setImageFile(imageFileName, pFile);
             }
@@ -185,6 +195,7 @@ public class CheckListActivity extends Activity {
 
                     });
         }else {
+            Toast.makeText(CheckListActivity.this, "Made it this far" + EMPTY_LIST, Toast.LENGTH_LONG).show();
             ParseQuery<TaskShare> query = TaskShare.getQuery();
             query.fromPin(TaskShareListApplication.TASKSHARE_GROUP_NAME);
             query.whereEqualTo("uploaded", false);
@@ -245,10 +256,16 @@ public class CheckListActivity extends Activity {
 
          }
 
+
         @Override
         public int getCount() {
+ //           if(mTaskSet.size() <= 0){
+ //               EMPTY_LIST = 1;
+ //           }
             return mTaskSet.size();
         }
+
+
 
         @Override
         public String getItem(int position) {

@@ -110,6 +110,16 @@ public class TaskShareEditActivity extends Activity {
                     return;
                 }
 
+                if (imageFileName != null){
+                String bodyText = "We're having issues with: " + currentItem;
+                Intent mmsIntent = new Intent(Intent.ACTION_SEND);
+                    mmsIntent.putExtra("sms_body", bodyText);
+                    mmsIntent.setClassName("com.android.mms", "com.android.mms.ui.ComposeMessageActivity");
+                    mmsIntent.putExtra(Intent.EXTRA_STREAM, Uri.fromFile(new File(mCurrentPhotoPath)));
+                    mmsIntent.setType("image/*");
+                    startActivity(Intent.createChooser(mmsIntent,"Send image To:"));
+                }
+
                 Intent returnIntent = new Intent();
                 returnIntent.putExtra("currentItem", currentItem);
                 returnIntent.putExtra("mEdit", mEdit);

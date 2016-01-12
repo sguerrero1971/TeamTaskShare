@@ -41,15 +41,6 @@ public class TaskShareActivity extends Activity {
         nameTextView = (TextView) findViewById(R.id.profile_name);
         titleTextView.setText(R.string.profile_title_logged_out);
 
-        if (profileCompleted == false) {
-            fillInProfile();
-        }
-
-        if(currentUser != null && profileCompleted == true){
-            Intent myIntent = new Intent(this, CheckListActivity.class);
-            startActivity(myIntent);
-        }
-
         //Button to allow user to log in
         loginOrLogoutButton = (Button) findViewById(R.id.login_or_logout_button);
         loginOrLogoutButton.setOnClickListener(new View.OnClickListener() {
@@ -67,15 +58,19 @@ public class TaskShareActivity extends Activity {
                 }
             }
         });
+
+        profileCompleted = currentUser.getBoolean("profileCompleted");
+
+        if (currentUser != null && profileCompleted != false){
+            Intent myIntent = new Intent(this, CheckListActivity.class);
+            startActivity(myIntent);
+        } else if(profileCompleted != true) {
+            fillInProfile();
+        }else {
+            Intent myIntent = new Intent(this, CheckListActivity.class);
+            startActivity(myIntent);
+        }
     }
-
-
-
- /*   private void openCheckListActivity(){
-        Intent myIntent = new Intent(this, CheckListActivity.class);
-        startActivityForResult(myIntent, LOGIN_ACTIVITY_CODE);
-    }
-*/
 
   @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
@@ -83,21 +78,11 @@ public class TaskShareActivity extends Activity {
         // An OK result means the pinned dataset changed or
         // log in was successful
         if (resultCode == RESULT_OK) {
-            Intent myIntent = new Intent(this, CheckListActivity.class);
-            startActivity(myIntent);
 
-           // if (requestCode == EDIT_ACTIVITY_CODE) {
-                // Coming back from the edit view, update the view
-             //   taskShareListAdapter.loadObjects();
-           // } else if(requestCode == LOGIN_ACTIVITY_CODE) {
-                // If the user is new, require login or create account,
-                // else get the current list from Parse
-
-          //  }
-
+                    Intent myIntent = new Intent(this, CheckListActivity.class);
+                    startActivity(myIntent);
+            }
         }
-    }
-
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
@@ -124,9 +109,6 @@ public class TaskShareActivity extends Activity {
         return true;
     }
 
-
-
-
     private void fillInProfile() {
         email = currentUser.getEmail();
         fullName = currentUser.getString("name");
@@ -135,21 +117,7 @@ public class TaskShareActivity extends Activity {
         profileIntent.putExtra("email", email);
         startActivity(profileIntent);
     }
-
-    /**
-     * Shows the profile of the given user.
-
-    private void showProfileLoggedIn() {
-        titleTextView.setText(R.string.profile_title_logged_in);
-        emailTextView.setText(currentUser.getEmail());
-        String fullName = currentUser.getString("name");
-        if (fullName != null) {
-            nameTextView.setText(fullName);
-        }
-        loginOrLogoutButton.setText(R.string.profile_logout_button_label);
-    }
-     */
-
+    
     /**
      * Show a message asking the user to log in, toggle login/logout button text.
      */

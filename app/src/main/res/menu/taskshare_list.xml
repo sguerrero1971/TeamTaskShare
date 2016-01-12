@@ -7,7 +7,7 @@
 
     <item
         android:id="@+id/menu_item2"
-        android:icon="@drawable/ic_action_refresh"
+        android:icon="@drawable/ic_action_new"
         android:title="@string/current_profile">
     </item>
 

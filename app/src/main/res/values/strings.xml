@@ -35,4 +35,6 @@
     <string name="profile_radio_group">Please select your shift</string>
     <string name="profile_unit_hint">Please enter your unit number</string>
     <string name="save">Save</string>
+    <string name="contact">Select MMS Contact</string>
+    <string name="push_to_parse">Submit to Server</string>
 </resources>
