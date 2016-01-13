@@ -1,8 +1,9 @@
 package com.sagapp.teamtaskshare.ui.activity;
 
-import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -16,24 +17,26 @@ import com.sagapp.teamtaskshare.R;
 /**
  * Created by Solar Employee on 12/2/2015.
  */
-public class TaskShareActivity extends Activity {
+public class TaskShareActivity extends AppCompatActivity {
 
 
     private static final int LOGIN_ACTIVITY_CODE = 100;
     private TextView titleTextView;
     private TextView emailTextView;
     private TextView nameTextView;
-    private boolean profileCompleted = false;
     private String email;
     private String fullName;
     private Button loginOrLogoutButton;
-    public ParseUser currentUser = ParseUser.getCurrentUser();
+    private ParseUser currentUser = ParseUser.getCurrentUser();
+    private boolean profileCompleted = false;
 
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_taskshare);
+        Toolbar myToolbar = (Toolbar) findViewById(R.id.my_toolbar);
+        setSupportActionBar(myToolbar);
 
         //Setup views for Profile
         titleTextView = (TextView) findViewById(R.id.profile_title);
@@ -59,15 +62,10 @@ public class TaskShareActivity extends Activity {
             }
         });
 
-        profileCompleted = currentUser.getBoolean("profileCompleted");
-
-        if (currentUser != null && profileCompleted != false){
-            Intent myIntent = new Intent(this, CheckListActivity.class);
-            startActivity(myIntent);
-        } else if(profileCompleted != true) {
-            fillInProfile();
-        }else {
-            Intent myIntent = new Intent(this, CheckListActivity.class);
+        if (currentUser == null) {
+            showProfileLoggedOut();
+        } else if (currentUser != null && profileCompleted == false){
+            Intent myIntent = new Intent(this, TaskShareUserProfileActivity.class);
             startActivity(myIntent);
         }
     }
@@ -78,9 +76,12 @@ public class TaskShareActivity extends Activity {
         // An OK result means the pinned dataset changed or
         // log in was successful
         if (resultCode == RESULT_OK) {
-
+                if(profileCompleted == false) {
+                    fillInProfile();
+                } else {
                     Intent myIntent = new Intent(this, CheckListActivity.class);
                     startActivity(myIntent);
+                }
             }
         }
 
@@ -99,9 +100,6 @@ public class TaskShareActivity extends Activity {
                 Intent intent = new Intent(this, TaskShareUserProfileActivity.class);
                 this.startActivity(intent);
                 break;
-            case R.id.menu_item2:
-                // another startActivity, this is for item with id "menu_item2"
-                break;
             default:
                 return super.onOptionsItemSelected(item);
         }
@@ -110,6 +108,7 @@ public class TaskShareActivity extends Activity {
     }
 
     private void fillInProfile() {
+        currentUser = ParseUser.getCurrentUser();
         email = currentUser.getEmail();
         fullName = currentUser.getString("name");
         Intent profileIntent = new Intent(this, TaskShareUserProfileActivity.class);
@@ -117,7 +116,7 @@ public class TaskShareActivity extends Activity {
         profileIntent.putExtra("email", email);
         startActivity(profileIntent);
     }
-    
+
     /**
      * Show a message asking the user to log in, toggle login/logout button text.
      */

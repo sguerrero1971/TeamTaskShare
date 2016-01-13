@@ -37,4 +37,6 @@
     <string name="save">Save</string>
     <string name="contact">Select MMS Contact</string>
     <string name="push_to_parse">Submit to Server</string>
+    <string name="usable">This item is still usable</string>
+    <string name="not_usable">This item is not usable</string>
 </resources>

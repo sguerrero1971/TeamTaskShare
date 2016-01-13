@@ -1,11 +1,11 @@
 package com.sagapp.teamtaskshare.ui.activity;
 
-import android.app.Activity;
 import android.content.Intent;
 import android.database.Cursor;
 import android.net.Uri;
 import android.os.Bundle;
 import android.provider.ContactsContract;
+import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
@@ -25,7 +25,7 @@ import com.sagapp.teamtaskshare.R;
 /**
  * Created by Solar Employee on 1/10/2016.
  */
-public class TaskShareUserProfileActivity extends Activity {
+public class TaskShareUserProfileActivity extends AppCompatActivity {
 
     private Spinner  profileLocationSpinner;
     private RadioGroup profileRadioGroup;
@@ -33,7 +33,7 @@ public class TaskShareUserProfileActivity extends Activity {
     private RadioButton profileNightButton;
     private String mmsName;
     private String mobileNumber = null;
-    private Boolean shift = null;
+    private String shift = null;
     private String location = null;
     private String equipment = null;
     private String profileUnitNumber;
@@ -55,8 +55,14 @@ public class TaskShareUserProfileActivity extends Activity {
         profileNightButton = (RadioButton) findViewById(R.id.profile_night_shift);
         fullName = (TextView) findViewById(R.id.profile_fullName);
         fullName.setText(currentUser.getString("name"));
-
         profileUnitNumberText = (EditText) findViewById(R.id.profile_unit_number);
+
+        if (currentUser.getBoolean("profileCompleted") == true){
+            shift = currentUser.getString("shift");
+            location = currentUser.getString("location");
+            equipment = currentUser.getString("equipment");
+            profileUnitNumber = currentUser.getString("unitNumber");
+        }
 
         contactButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -77,17 +83,17 @@ public class TaskShareUserProfileActivity extends Activity {
                 int selectedShift = profileRadioGroup.getCheckedRadioButtonId();
 
                 if(selectedShift == profileDayButton.getId()){
-                    shift = true;
+                    shift = "day";
                 }else if(selectedShift == profileNightButton.getId()) {
-                    shift = false;
+                    shift = "night";
                 }else if(selectedShift != profileDayButton.getId() && selectedShift != profileNightButton.getId()){
                     Toast.makeText(TaskShareUserProfileActivity.this, "Please select either Day shift or Night shift before saving ", Toast.LENGTH_LONG).show();
                     return;
                 }
-                Toast.makeText(TaskShareUserProfileActivity.this,shift + location + equipment + profileUnitNumber + mobileNumber, Toast.LENGTH_LONG).show();
+                //Toast.makeText(TaskShareUserProfileActivity.this,shift + location + equipment + profileUnitNumber + mobileNumber, Toast.LENGTH_LONG).show();
                 if(shift != null && location != null && equipment != null && profileUnitNumber != null && mobileNumber != null) {
 
-                    currentUser.put("shift", true);
+                    currentUser.put("shift", shift);
                     currentUser.put("location", location);
                     currentUser.put("equipment", equipment);
                     currentUser.put("unitNumber", profileUnitNumber);
@@ -178,7 +184,7 @@ public class TaskShareUserProfileActivity extends Activity {
     }
 
     public void showSelectedNumber(String mmsName, int type, String mobileNumber) {
-        Toast.makeText(this, "You've Selected to send MMS to " + mmsName + type + ": " + mobileNumber, Toast.LENGTH_LONG).show();
+        //Toast.makeText(this, "You've Selected to send MMS to " + mmsName + type + ": " + mobileNumber, Toast.LENGTH_LONG).show();
     }
 
 }

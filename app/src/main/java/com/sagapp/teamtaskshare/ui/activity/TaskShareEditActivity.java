@@ -1,13 +1,16 @@
 package com.sagapp.teamtaskshare.ui.activity;
 
-import android.app.Activity;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
 import android.provider.MediaStore;
+import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.Toolbar;
 import android.util.Log;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -17,6 +20,7 @@ import android.widget.RadioGroup;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.parse.ParseUser;
 import com.sagapp.teamtaskshare.R;
 
 import java.io.File;
@@ -27,13 +31,17 @@ import java.util.Date;
 /**
  * Created by SolarUser on 12/14/2015.
  */
-public class TaskShareEditActivity extends Activity {
+public class TaskShareEditActivity extends AppCompatActivity {
 
     public static EditText mDescrip;
     private TextView mItemTextView;
     private static String currentItem;
     private static int currentPosition;
     private static String mEdit;
+    private ParseUser currentUser = ParseUser.getCurrentUser();
+    private String mobileNumber;
+    private Object mobileNumberObj;
+    private String unitNumber;
 
     Button cameraButton;
     Button submitButton;
@@ -42,7 +50,7 @@ public class TaskShareEditActivity extends Activity {
     RadioButton notUsable;
 
 
-    private static boolean status;
+    private static String status;
 
     static final int REQUEST_IMAGE_CAPTURE = 1;
     private static final String TAG = "TaskShareEditActivity";
@@ -64,6 +72,8 @@ public class TaskShareEditActivity extends Activity {
         usable = (RadioButton) findViewById(R.id.usable);
         notUsable = (RadioButton) findViewById(R.id.notUsable);
         mItemTextView.setText(currentItem);
+        Toolbar myToolbar = (Toolbar) findViewById(R.id.my_toolbar);
+        setSupportActionBar(myToolbar);
 
         Intent intent = getIntent();
         currentItem = intent.getStringExtra("currentItem");
@@ -102,22 +112,26 @@ public class TaskShareEditActivity extends Activity {
                 int selectedId = usableNotUsable.getCheckedRadioButtonId();
 
                 if (selectedId == usable.getId()) {
-                    status = true;
+                    status = "usable";
                 } else if (selectedId == notUsable.getId()) {
-                    status = false;
+                    status = "not usable";
                 } else if (selectedId != notUsable.getId() && selectedId != usable.getId()) {
                     Toast.makeText(TaskShareEditActivity.this, "Please select either USABLE or NOT USABLE before submitting ", Toast.LENGTH_LONG).show();
                     return;
                 }
 
+
                 if (imageFileName != null){
-                String bodyText = "We're having issues with: " + currentItem;
-                Intent mmsIntent = new Intent(Intent.ACTION_SEND);
-                    mmsIntent.putExtra("sms_body", bodyText);
-                    mmsIntent.setClassName("com.android.mms", "com.android.mms.ui.ComposeMessageActivity");
-                    mmsIntent.putExtra(Intent.EXTRA_STREAM, Uri.fromFile(new File(mCurrentPhotoPath)));
-                    mmsIntent.setType("image/*");
-                    startActivity(Intent.createChooser(mmsIntent,"Send image To:"));
+                    unitNumber = currentUser.getString("unitNumber");
+                    mobileNumberObj = currentUser.get("mmsNumber");
+                    mobileNumber = mobileNumberObj.toString();
+                    String bodyText = "We're having issues with: " + currentItem + " on unit  number " + unitNumber;
+                    Intent mmsIntent = new Intent(Intent.ACTION_SEND);
+                        mmsIntent.putExtra("address", mobileNumber);
+                        mmsIntent.putExtra("sms_body", bodyText);
+                        mmsIntent.setType("image/jpg");
+                        mmsIntent.putExtra(Intent.EXTRA_STREAM, Uri.parse(mCurrentPhotoPath));
+                    startActivity(mmsIntent.createChooser(mmsIntent,"Send"));
                 }
 
                 Intent returnIntent = new Intent();
@@ -164,4 +178,26 @@ public class TaskShareEditActivity extends Activity {
             }
         }
     }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.taskshare_list, menu);
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+
+        switch(item.getItemId()) {
+            case R.id.menu_item1:
+                Intent intent = new Intent(this, TaskShareUserProfileActivity.class);
+                this.startActivity(intent);
+                break;
+            default:
+                return super.onOptionsItemSelected(item);
+        }
+
+        return true;
+    }
+
 }

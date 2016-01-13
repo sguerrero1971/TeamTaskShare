@@ -27,21 +27,13 @@ public class TaskShare extends ParseObject {
         put("author", currentUser);
 	}
 	
-	public boolean Status() {
-        return getBoolean("status");
+	public String Status() {
+        return getString("status");
 	}
 	
-	public void setStatus(boolean status) {
+	public void setStatus(String status) {
         put("status", status);
 	}
-
-    public boolean getShift(){
-        return getBoolean("shift");
-    }
-
-    public void setShift(boolean shift){
-        put("shift", shift);
-    }
 
 	public void setUuidString() {
 	    UUID uuid = UUID.randomUUID();

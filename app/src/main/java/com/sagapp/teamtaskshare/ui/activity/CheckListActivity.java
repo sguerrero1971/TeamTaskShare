@@ -6,8 +6,12 @@ import android.graphics.Bitmap;
 import android.net.Uri;
 import android.os.Bundle;
 import android.provider.MediaStore;
+import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AbsListView;
@@ -42,9 +46,10 @@ import java.util.List;
 /**
  * Created by SolarUser on 12/14/2015.
  */
-public class CheckListActivity extends Activity {
+public class CheckListActivity extends AppCompatActivity {
 
     private static final int EDIT_ACTIVITY_CODE = 200;
+    private static final int LOGIN_ACTIVITY_CODE = 100;
     private static int EMPTY_LIST = 0;
     private int currentPosition;
     private TaskShare taskShare;
@@ -52,11 +57,12 @@ public class CheckListActivity extends Activity {
     private String mEdit;
     private String imageFileName;
     private String imageUri;
-    private boolean status;
+    private String status = "working";
     private TaskBaseAdapter adapter;
     Bitmap bmp;
     ParseFile pFile = null ;
     TextView empty;
+    private ParseUser currentUser = ParseUser.getCurrentUser();
 
 
 
@@ -66,6 +72,8 @@ public class CheckListActivity extends Activity {
         setContentView(R.layout.activity_checklist);
         init((ListView) findViewById(R.id.taskShare_list_view));
         empty = (Button) findViewById(R.id.emptyText);
+        Toolbar myToolbar = (Toolbar) findViewById(R.id.my_toolbar);
+        setSupportActionBar(myToolbar);
 
         empty.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -75,6 +83,11 @@ public class CheckListActivity extends Activity {
                 finish();
             }
         });
+
+        if(currentUser == null){
+            Intent loginintent = new Intent(this, TaskShareActivity.class);
+            startActivityForResult(loginintent, LOGIN_ACTIVITY_CODE);
+        }
     }
 
     private void init(ListView listView){
@@ -127,7 +140,7 @@ public class CheckListActivity extends Activity {
                 // Coming back from the edit view, process edited item and update view
             currentItem = data.getStringExtra("currentItem");
             mEdit = data.getStringExtra("mEdit");
-            status = data.getBooleanExtra("status", status);
+            status = data.getStringExtra("status");
             imageFileName = data.getStringExtra("imageFileName");
             imageUri = data.getStringExtra("imageUri");
             if (imageUri != null){
@@ -153,15 +166,15 @@ public class CheckListActivity extends Activity {
                 }
             }
             currentPosition = data.getIntExtra("position", currentPosition);
-            Toast.makeText(CheckListActivity.this, currentItem + mEdit + status + imageUri + currentPosition, Toast.LENGTH_LONG).show();
+            //Toast.makeText(CheckListActivity.this, currentItem + mEdit + status + imageUri + currentPosition, Toast.LENGTH_LONG).show();
             adapter.remove(currentPosition);
-            }else {
+            }else if (requestCode == LOGIN_ACTIVITY_CODE && resultCode == RESULT_OK) {
             adapter.notifyDataSetChanged();
         }
         }
 
     private void submitTaskShare(String mItem){
-        Toast.makeText(CheckListActivity.this, "This is Empty list" + EMPTY_LIST, Toast.LENGTH_LONG).show();
+        //Toast.makeText(CheckListActivity.this, "This is Empty list" + EMPTY_LIST, Toast.LENGTH_LONG).show();
         if(EMPTY_LIST == 0) {
             taskShare = new TaskShare();
             taskShare.setUploaded(false);
@@ -170,6 +183,7 @@ public class CheckListActivity extends Activity {
             }
             if (imageFileName != null) {
                 taskShare.setImageFile(imageFileName, pFile);
+                imageFileName = null;
             }
             taskShare.setUuidString();
             taskShare.setTask(mItem);
@@ -195,7 +209,7 @@ public class CheckListActivity extends Activity {
 
                     });
         }else {
-            Toast.makeText(CheckListActivity.this, "Made it this far" + EMPTY_LIST, Toast.LENGTH_LONG).show();
+            //Toast.makeText(CheckListActivity.this, "Made it this far" + EMPTY_LIST, Toast.LENGTH_LONG).show();
             ParseQuery<TaskShare> query = TaskShare.getQuery();
             query.fromPin(TaskShareListApplication.TASKSHARE_GROUP_NAME);
             query.whereEqualTo("uploaded", false);
@@ -304,6 +318,27 @@ public class CheckListActivity extends Activity {
             viewHolder.taskShareTitle.setText(mTaskSet.get(position));
             return convertView;
         }
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.taskshare_list, menu);
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+
+        switch(item.getItemId()) {
+            case R.id.menu_item1:
+                Intent intent = new Intent(this, TaskShareUserProfileActivity.class);
+                this.startActivity(intent);
+                break;
+            default:
+                return super.onOptionsItemSelected(item);
+        }
+
+        return true;
     }
 }
 
