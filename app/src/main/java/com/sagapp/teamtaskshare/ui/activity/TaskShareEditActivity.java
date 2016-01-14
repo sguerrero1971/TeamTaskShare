@@ -22,6 +22,7 @@ import android.widget.Toast;
 
 import com.parse.ParseUser;
 import com.sagapp.teamtaskshare.R;
+import com.sagapp.teamtaskshare.TaskShareProfile;
 
 import java.io.File;
 import java.io.IOException;
@@ -38,6 +39,7 @@ public class TaskShareEditActivity extends AppCompatActivity {
     private static String currentItem;
     private static int currentPosition;
     private static String mEdit;
+    private TaskShareProfile TaskShareProfile;
     private ParseUser currentUser = ParseUser.getCurrentUser();
     private String mobileNumber;
     private Object mobileNumberObj;

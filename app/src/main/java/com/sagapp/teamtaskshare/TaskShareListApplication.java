@@ -9,6 +9,7 @@ import com.parse.ParseObject;
 public class TaskShareListApplication extends Application {
 	
 	public static final String TASKSHARE_GROUP_NAME = "ALL_TASKSHARES";
+    public static final String TASKSHARE_PROFILE = "TASKSHARE_PROFILE";
 	
 	@Override
 	public void onCreate() {
