@@ -17,6 +17,7 @@ public class TaskShareListApplication extends Application {
 		
 		// add TaskShare subclass
 		ParseObject.registerSubclass(TaskShare.class);
+        ParseObject.registerSubclass(TaskShareProfile.class);
 		
 		// enable the Local Datastore
 		Parse.enableLocalDatastore(getApplicationContext());

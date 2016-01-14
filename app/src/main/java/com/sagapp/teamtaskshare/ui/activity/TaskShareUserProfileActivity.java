@@ -25,6 +25,7 @@ import com.parse.ParseQuery;
 import com.parse.ParseUser;
 import com.parse.SaveCallback;
 import com.sagapp.teamtaskshare.R;
+import com.sagapp.teamtaskshare.TaskShareListApplication;
 import com.sagapp.teamtaskshare.TaskShareProfile;
 
 import java.util.List;
@@ -217,9 +218,16 @@ public class TaskShareUserProfileActivity extends AppCompatActivity {
                 taskShareProfile.setMmsNumber(mobileNumber);
                 taskShareProfile.setUuidString();
                 taskShareProfile.setProfileCompleted(false);
-                taskShareProfile.pinInBackground(new SaveCallback() {
+                taskShareProfile.saveInBackground(new SaveCallback() {
                     @Override
                     public void done(ParseException e) {
+                        taskShareProfile.setProfileCompleted(true);
+                        taskShareProfile.saveInBackground(new SaveCallback() {
+                            @Override
+                            public void done(ParseException e) {
+                                ParseObject.unpinAllInBackground(TaskShareListApplication.TASKSHARE_PROFILE);
+                            }
+                        });
                         if (e == null) {
                             Intent intent = new Intent(TaskShareUserProfileActivity.this, CheckListActivity.class);
                             startActivity(intent);
