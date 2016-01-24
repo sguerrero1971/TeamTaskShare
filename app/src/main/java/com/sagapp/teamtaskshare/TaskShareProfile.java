@@ -78,6 +78,14 @@ public class TaskShareProfile extends ParseObject{
         return getBoolean("profileCompleted");
     }
 
+    public boolean uploaded() {
+        return getBoolean("uploaded");
+    }
+
+    public void setUploaded(boolean uploaded) {
+        put("uploaded", uploaded);
+    }
+
     public static ParseQuery<TaskShareProfile> getQuery() {
         return ParseQuery.getQuery(TaskShareProfile.class);
     }

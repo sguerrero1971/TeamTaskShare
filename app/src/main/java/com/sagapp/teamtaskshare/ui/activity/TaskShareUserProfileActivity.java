@@ -25,7 +25,6 @@ import com.parse.ParseQuery;
 import com.parse.ParseUser;
 import com.parse.SaveCallback;
 import com.sagapp.teamtaskshare.R;
-import com.sagapp.teamtaskshare.TaskShareListApplication;
 import com.sagapp.teamtaskshare.TaskShareProfile;
 
 import java.util.List;
@@ -210,6 +209,7 @@ public class TaskShareUserProfileActivity extends AppCompatActivity {
                 if (shift != null && location != null && equipment != null && profileUnitNumber != null && mobileNumber != null) {
 
                 taskShareProfile = new TaskShareProfile();
+                taskShareProfile.setUploaded(false);
                 taskShareProfile.setShift(shift);
                 taskShareProfile.setLocation(location);
                 taskShareProfile.setEquipment(equipment);
@@ -218,14 +218,15 @@ public class TaskShareUserProfileActivity extends AppCompatActivity {
                 taskShareProfile.setMmsNumber(mobileNumber);
                 taskShareProfile.setUuidString();
                 taskShareProfile.setProfileCompleted(false);
-                taskShareProfile.saveInBackground(new SaveCallback() {
+                taskShareProfile.pinInBackground(new SaveCallback() {
                     @Override
                     public void done(ParseException e) {
                         taskShareProfile.setProfileCompleted(true);
-                        taskShareProfile.saveInBackground(new SaveCallback() {
+                        taskShareProfile.pinInBackground(new SaveCallback() {
                             @Override
                             public void done(ParseException e) {
-                                ParseObject.unpinAllInBackground(TaskShareListApplication.TASKSHARE_PROFILE);
+                                return;
+                                //ParseObject.unpinAllInBackground(TaskShareListApplication.TASKSHARE_PROFILE);
                             }
                         });
                         if (e == null) {

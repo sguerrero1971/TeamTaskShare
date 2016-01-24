@@ -11,6 +11,7 @@
         android:layout_height="wrap_content"
         android:height="@dimen/list_item_height"
         android:gravity="center_vertical"
+        android:textSize="20sp"
         android:paddingLeft="@dimen/list_item_padding_sides"
         android:paddingRight="@dimen/list_item_padding_sides"
         android:id="@+id/txt_data"
